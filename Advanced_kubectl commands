@@ -1,0 +1,30 @@
+JSON PATH:
+==========
+why ?
+-----
+-> Large Datasets : 
+   - 100s of Nodes
+   - 1000s of pods, deployments, replicasets
+
+1- Kubectl ---request---> kube-apiserver
+2- kubectl <---response in json format--- kube-apiserver
+3- kubectl convert the json format to human readble format
+
+kubectl get nodes -o wide -> additionnal infos details
+
+HOW to jsoo path in kubectl ?
+-----------------------------
+1 - identify the kubectl command
+2 - familiarize with JSON output
+3 - From the JSON PATH query
+4 - use the JSON PATH quesry with kubectl command
+
+JSON PATH examples:
+-------------------
+kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
+kubectl get nodes -o=jsonpath='{.items[*].status.nodeInfo.architecture}'
+kubectl get nodes -o=jsonpath='{.items[*].status.capacity.cpu}'
+kubectl get nodes -o=jsonpath='{.items[*].status.capacity.ephemeral-storage}'
+
+
+
