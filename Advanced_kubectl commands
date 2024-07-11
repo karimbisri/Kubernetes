@@ -19,12 +19,25 @@ HOW to jsoo path in kubectl ?
 3 - From the JSON PATH query
 4 - use the JSON PATH quesry with kubectl command
 
-JSON PATH examples:
--------------------
+JSON PATH examples:-------------------
 kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
 kubectl get nodes -o=jsonpath='{.items[*].status.nodeInfo.architecture}'
 kubectl get nodes -o=jsonpath='{.items[*].status.capacity.cpu}'
 kubectl get nodes -o=jsonpath='{.items[*].status.capacity.ephemeral-storage}'
 
+MERGE TWO QUERIES:
+------------------
+kubectl get nodes -o=jsonpath='{.items[*].metadata.name}{"\n"}{.items[*].status.capacity.cpu}'
+- {"\n"} : new line
+- {"\t"} : Tab
 
+Loops - Range:
+--------------
+pass thid command as a parameter to kubectl:
+'{range .items[*]}{.metadata.name} {"\t"} {.status.capacity.cpu}{"\n"}{end}'
+kubectl get nodes -o=jsonpath='{range .items[*]}{.metadata.name} {"\t"} {.status.capacity.cpu}{"\n"}{end}'
 
+OR More sophisticated way:
+--------------------------
+- kubectl get nodes -o=custom-columns=<COLUMN NAME>:<JSON PATH>
+kubectl get nodes -o=custom-columns=NODE:.metadata.name,CPU:.status.capacity.cpu
